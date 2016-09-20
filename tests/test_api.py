@@ -33,8 +33,15 @@ async def test_upload_and_download(event_loop, unused_tcp_port_factory,
         url = 'http://%s:%d/%s' % (host, port, 'hello.txt')
 
         # Upload the file.
-        async with client.put(url, data=b'Hello, world!') as response:
-            assert response.status == 201
+        #
+        # NOTE: it may take a moment for the server to become ready.
+        while True:
+            try:
+                async with client.put(url, data=b'Hello, world!') as response:
+                    assert response.status == 201
+                break
+            except aiohttp.errors.ClientOSError:
+                pass
 
         # Download it back.
         async with client.get(url) as response:
