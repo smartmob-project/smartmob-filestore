@@ -3,6 +3,7 @@
 [run]
 branch = True
 source = smartmob_filestore/
+omit = smartmob_filestore/__main__.py
 
 [paths]
 source =

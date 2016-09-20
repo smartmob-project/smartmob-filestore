@@ -40,7 +40,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'smartmob-filestore = smartmob_filestore:main',
+            'smartmob-filestore = smartmob_filestore.__main__:entry_point',
          ],
     },
     install_requires=[

@@ -30,7 +30,7 @@ cli.add_argument('--host', action='store', dest='host',
 cli.add_argument('--port', action='store', dest='port',
                  type=int, default=8080)
 cli.add_argument('--logging-endpoint', action='store', dest='logging_endpoint',
-                 default=None)
+                 default='file:///dev/stdout')
 cli.add_argument('--storage', action='store', dest='storage',
                  type=str, default='.')
 
@@ -303,10 +303,3 @@ async def main(argv, loop=None):
 
     # Shut down.
     event_log.info('stop')
-
-
-if __name__ == '__main__':  # pragma: no cover
-    loop = asyncio.get_event_loop()
-    sys.exit(loop.run_until_complete(
-        main(sys.argv[1:], loop=loop)
-    ))
