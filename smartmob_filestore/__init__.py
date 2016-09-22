@@ -30,7 +30,7 @@ cli.add_argument('--host', action='store', dest='host',
 cli.add_argument('--port', action='store', dest='port',
                  type=int, default=8080)
 cli.add_argument('--logging-endpoint', action='store', dest='logging_endpoint',
-                 default='file:///dev/stdout')
+                 default=None)
 cli.add_argument('--storage', action='store', dest='storage',
                  type=str, default='.')
 
@@ -265,11 +265,18 @@ async def main(argv, loop=None):
 
     arguments = cli.parse_args(argv)
 
+    # Apply defaults.
+    logging_endpoint = arguments.logging_endpoint
+    if not logging_endpoint:
+        logging_endpoint = os.environ.get('SMARTMOB_LOGGING_ENDPOINT')
+    if not logging_endpoint:
+        logging_endpoint = 'file:///dev/stdout'
+
     # Send structured logs to requested destination.
     configure_logging(
         log_format='iso',
         utc=True,
-        endpoint=arguments.logging_endpoint,
+        endpoint=logging_endpoint,
     )
     event_log = structlog.get_logger()
 

@@ -8,6 +8,7 @@ import pytest
 import testfixtures
 
 from smartmob_filestore import configure_logging
+from unittest import mock
 
 
 __here__ = os.path.dirname(os.path.abspath(__file__))
@@ -72,3 +73,9 @@ def fluent_server(event_loop, unused_tcp_port_factory):
     yield host, port, records
     server.close()
     event_loop.run_until_complete(server.wait_closed())
+
+
+@pytest.yield_fixture(scope='function')
+def save_env():
+    with mock.patch('os.environ', {k: v for k, v in os.environ.items()}):
+        yield
